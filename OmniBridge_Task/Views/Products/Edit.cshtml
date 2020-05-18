@@ -1,0 +1,122 @@
+﻿@model OmniBridge_Task.Product
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<script type="text/javascript">
+    function ValidateDate() {
+
+        var nowDate = new Date();
+        var today = nowDate.getFullYear() + '-' + ("0" + (nowDate.getMonth() + 1)).slice(-2) + '-' + nowDate.getDate();
+        var expDate = $('#ExpiryDate').val();
+        today = Date.parse(today);
+        expDate = Date.parse(expDate);
+
+        if (expDate <= today) {
+            alert('Please enter Expiry Date greater than Current Date');
+            $('#ExpiryDate').val("");
+        }
+        //else {
+        //    alert('Not Expired');
+        //}
+    }
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProductId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsGSTApplicable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @*@Html.EditorFor(model => model.IsGSTApplicable)*@
+                    Yes @Html.RadioButtonFor(m => m.IsGSTApplicable, "Yes")
+                    No @Html.RadioButtonFor(m => m.IsGSTApplicable, "No")
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Purchase_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Purchase_Date, new { htmlAttributes = new { @class = "form-control", @Value = Model.ExpiryDate.Value.Date.ToString("yyyy-MM-dd") } })
+                @Html.ValidationMessageFor(model => model.Purchase_Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExpiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control", @onblur = "ValidateDate()" , @Value = Model.ExpiryDate.Value.Date.ToString("yyyy-MM-dd") } } )
+                @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Color, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownList("Color", new List<SelectListItem>
+  {
+  new SelectListItem{ Text ="Yellow", Value="Yellow"},
+  new SelectListItem{ Text ="Black", Value="Black"},
+  new SelectListItem{ Text ="Pink", Value="Pink"},
+  new SelectListItem{ Text ="White", Value="White"},
+  new SelectListItem{ Text ="Blue", Value="Blue"},
+  new SelectListItem{ Text ="Green", Value="Green"},
+  }, "Select Color")
+                @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
